@@ -7,11 +7,11 @@ This Solidity program is a simple smart contract that mimics the ECR20 token. Th
 
 This program is a simple contract written in Solidity, a programming language for developing smart contracts on the Ethereum blockchain. The contract shows the three error-handling mechanisms ```require, revert, assert```. The contract has five functions as listed below.
 
-- mint: allows the owner to mint tokens to an address. The modifier that makes sure only the owner can call this function uses ```require``` to makes sure only the owner can call the function. ```require``` is also used to make sure the address to mint to is not address zero.
-- transfer: allows an account to transfer tokens to another account. ```require``` is used to make sure the receiver is not an address zero. ```assert``` is used to ascertain the balance after transfer.
-- burn: this allows an account to burn its token. ```revert``` is used to make sure the account balance is not less than the intended burn amount.
-- balanceOf: allows a user to check his token balance
-- totalSupply: shows the total token in circulation
+- ```mint```: allows the owner to mint tokens to an address. The modifier that makes sure only the owner can call this function uses ```require``` to makes sure only the owner can call the function. ```require``` is also used to make sure the address to mint to is not address zero. ```assert``` makes sure that the token in circulation does not exceed the MAXIMUM SUPPLY.
+- ```transfer```: allows an account to transfer tokens to another account. ```require``` is used to make sure the receiver is not an address zero. ```assert``` is used to ascertain the balance after transfer.
+- ```burn```: this allows an account to burn its token. ```revert``` is used to make sure the account balance is not less than the intended burn amount.
+- ```balanceOf```: allows a user to check his token balance
+- ```totalSupply```: shows the total token in circulation
 
 ## Getting Started
 
