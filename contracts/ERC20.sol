@@ -2,13 +2,13 @@
 pragma solidity ^0.8.18;
 
 
-
 contract ERC20 {
 
     address immutable owner;
     uint256 public totalSupply;
+    uint256 constant MAX_SUPPLY = 10000;
 
-    mapping(address  => uint256 ) public balancesOf;
+    mapping(address  => uint256 ) public balanceOf;
 
     event TokenMinted(address owner, address to, uint256 value);
     event Transfer(address sender, address _to, uint256 _value);
@@ -32,8 +32,10 @@ contract ERC20 {
   
 
     function mint(address _to, uint256 _value) public onlyOwner addressZeroCheck(_to) {
-    
-        balancesOf[_to] = balancesOf[_to] + _value;
+
+        assert((totalSupply + _value) <= MAX_SUPPLY);
+
+        balanceOf[_to] = balanceOf[_to] + _value;
         totalSupply = totalSupply + _value;
 
         emit TokenMinted(msg.sender, _to, _value);
@@ -42,26 +44,27 @@ contract ERC20 {
     
     function transfer(address _to, uint256 _value) external addressZeroCheck(_to) returns (bool) {
 
-        uint256 balance = balancesOf[msg.sender];
+        uint256 balance = balanceOf[msg.sender];
         
-        balancesOf[msg.sender] = balancesOf[msg.sender] - _value;
+        balanceOf[msg.sender] = balanceOf[msg.sender] - _value;
 
-        assert(balancesOf[msg.sender] == (balance - _value));
+        assert(balanceOf[msg.sender] == (balance - _value));
 
-        balancesOf[_to] = balancesOf[_to] + _value;
+        balanceOf[_to] = balanceOf[_to] + _value;
 
         emit Transfer(msg.sender, _to, _value);
+        
         return true;
     }
 
 
     function burn(uint96 _value) external {
-        if (balancesOf[msg.sender] < _value) revert("Insufficient balance!");
+        if (balanceOf[msg.sender] < _value) revert("Insufficient balance!");
 
-        balancesOf[msg.sender] = balancesOf[msg.sender] - _value;
+        balanceOf[msg.sender] = balanceOf[msg.sender] - _value;
         totalSupply = totalSupply - _value;
 
-        balancesOf[address(0)] = balancesOf[address(0)] + _value;
+        balanceOf[address(0)] = balanceOf[address(0)] + _value;
 
         emit Burned(msg.sender, _value);
     }
